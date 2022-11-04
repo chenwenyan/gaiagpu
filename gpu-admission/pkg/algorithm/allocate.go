@@ -22,6 +22,7 @@ import (
 	"strings"
 	"time"
 
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/klog"
 
 	"tkestack.io/gpu-admission/pkg/device"
