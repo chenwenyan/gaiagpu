@@ -7,5 +7,5 @@ go/
 *zip*
 *gz*
 *output*
-
+*.code-workspace
 
