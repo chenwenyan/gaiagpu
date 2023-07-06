@@ -22,7 +22,7 @@ import (
 	"strings"
 	"time"
 
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/klog"
 
 	"tkestack.io/gpu-admission/pkg/device"
@@ -120,11 +120,13 @@ func (alloc *allocator) AllocateOne(container *v1.Container) ([]*device.DeviceIn
 	// record this container GPU request, we don't rollback data if an error happened,
 	// because any container failed to be allocated will cause the predication failed
 	for _, dev := range devs {
-		err := alloc.nodeInfo.AddUsedResources(dev.GetID(), vcore, vmemory)
-		if err != nil {
-			klog.Infof("failed to update used resource for node %s dev %d due to %v",
-				node.Name, dev.GetID(), err)
-			return nil, err
+		if dev.GetMemory() >= 94 { // filter out the device which are not RTX3090
+			err := alloc.nodeInfo.AddUsedResources(dev.GetID(), vcore, vmemory)
+			if err != nil {
+				klog.Infof("failed to update used resource for node %s dev %d due to %v",
+					node.Name, dev.GetID(), err)
+				return nil, err
+			}
 		}
 	}
 	return devs, nil

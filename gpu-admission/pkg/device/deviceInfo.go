@@ -68,3 +68,8 @@ func (d *DeviceInfo) AllocatableCores() uint {
 func (d *DeviceInfo) AllocatableMemory() uint {
 	return d.totalMemory - d.usedMemory
 }
+
+// GetMemory capacity of this GPU device
+func (d *DeviceInfo) GetMemory() uint {
+	return d.totalMemory
+}
